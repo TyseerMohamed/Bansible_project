@@ -16,24 +16,28 @@
       </body>
       </html>
   tasks:
+  - name: Update apt cache
+    ansible.builtin.apt:
+         update_cache: yes
+         
     - name: Install Nginx
-      yum:
+      ansible.builtin.apt:
         name: nginx
         state: present
 
     - name: Start and enable Nginx service
-      systemd:
+      ansible.builtin.apt:
         name: nginx
         state: started
         enabled: yes
 
     - name: Deploy HTML content
-      copy:
+      ansible.builtin.apt:
         content: "{{ web_content }}"
         dest: /usr/share/nginx/html/index.html
 
     - name: Ensure Nginx is running
-      service:
+      ansible.builtin.apt:
         name: nginx
         state: started
 
