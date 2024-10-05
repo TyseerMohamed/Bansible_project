@@ -1,0 +1,39 @@
+---
+- name: Setup Nginx Web Server on CentOS
+  hosts: webservers
+  become: yes
+  vars:
+    web_content: |
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Welcome</title>
+      </head>
+      <body>
+          <h1>Hello Ansible from Tyseer</h1>
+      </body>
+      </html>
+  tasks:
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Start and enable Nginx service
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Deploy HTML content
+      copy:
+        content: "{{ web_content }}"
+        dest: /usr/share/nginx/html/index.html
+
+    - name: Ensure Nginx is running
+      service:
+        name: nginx
+        state: started
+
